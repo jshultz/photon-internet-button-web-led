@@ -1,8 +1,5 @@
 // This #include statement was automatically added by the Particle IDE.
-// This will add the InternetButton library to our app.
 #include "InternetButton/InternetButton.h"
-
-InternetButton b = InternetButton();
 
 
 // -----------------------------------
@@ -10,21 +7,26 @@ InternetButton b = InternetButton();
 // -----------------------------------
 
 // First, let's create our "shorthand" for the pins
+// Same as in the Blink an LED example:
 // led1 is D0, led2 is D7
 
 /* How about we make this interactive? */
 
-// These are the led's on the photon itself.
+InternetButton b = InternetButton();
+
 int led1 = D0;
 int led2 = D7;
 
 bool rainbow_mode = false;
 
+// Last time, we only needed to declare pins in the setup function.
+// This time, we are also going to register our Spark function
+
 void setup()
 {
     b.begin();
 
-   // Here's the pin configuration
+   // Here's the pin configuration, same as last time
    pinMode(led1, OUTPUT);
    pinMode(led2, OUTPUT);
 
@@ -35,6 +37,7 @@ void setup()
    // For good measure, let's also make sure both LEDs are off when we start:
    digitalWrite(led1, LOW);
    digitalWrite(led2, LOW);
+
 }
 
 // Since we're waiting for input through the cloud this time,
@@ -42,7 +45,7 @@ void setup()
 
 void loop()
 {
-   // Nothing to do here, move along citizen.
+   // Nothing to do here
 }
 
 // We're going to have a super cool function now that gets called when a matching API request is sent
@@ -63,6 +66,10 @@ int ledToggle(String command) {
         digitalWrite(led2,HIGH);
         b.rainbow(5);
         rainbow_mode = true;
+        delay(2000);
+        b.allLedsOff();
+        digitalWrite(led1,LOW);
+        digitalWrite(led2,LOW);
         return 1;
     }
     else if (command=="off") {
